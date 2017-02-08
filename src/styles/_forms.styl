@@ -1,0 +1,412 @@
+//
+// Forms
+// ==============================================
+// Normalize
+label
+  display inline-block
+  max-width 100%
+  margin-bottom .5rem
+  font-weight FONT_WEIGHT_BOLD
+  cursor pointer
+
+input[type="search"]
+  box-sizing border-box
+
+// Position radios and checkboxes better
+input[type="radio"]
+input[type="checkbox"]
+  margin 4px 0 0
+  margin-top 1px \9
+  line-height normal
+
+// Set the height of file controls to match text inputs
+input[type="file"]
+  display block
+
+// Make range inputs behave like textual form controls
+input[type="range"]
+  display block
+  width 100%
+
+// Make multiple select elements height not fixed
+select[multiple]
+select[size]
+  height auto
+
+// Focus for file, radio, and checkbox
+input[type="file"]:focus
+input[type="radio"]:focus
+input[type="checkbox"]:focus
+  // WebKit-style focus
+  // Default
+  outline: thin dotted;
+  // WebKit
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+
+// Include sanitize.styl
+// ------------------------------------------------------------
+/**
+ * 1. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+button
+html input[type="button"]
+input[type="reset"]
+input[type="submit"]
+  cursor pointer; // 1
+
+
+//
+// Basic form controls
+// ----------------------
+
+// Text Input controls
+// input[type=text]
+// input[type=password]
+// input[type=email]
+// input[type=url]
+// input[type=time]
+// input[type=date]
+// input[type=datetime-local]
+// input[type=tel]
+// input[type=number]
+// input[type=search]
+// textarea
+// &
+.form-ctl
+  display block
+  width 100%
+  height INPUT_HEIGHT_BASE
+  padding INPUT_PADDING_VERTICAL_BASE INPUT_PADDING_HORIZONTAL_BASE
+  font-size FONT_SIZE_BASE
+  line-height LINE_HEIGHT_BASE
+  color INPUT_COLOR
+  background-color INPUT_BACKGROUND_COLOR
+  border INPUT_BORDER_WIDTH solid INPUT_BORDER_COLOR
+  box-shadow inset 0 2px 2px rgba(0, 0, 0, .065)
+
+  placeholder(INPUT_PLACEHOLDER_COLOR, INPUT_PLACEHOLDER_OPACITY)
+
+  &[disabled]
+  &[readonly]
+    background-color INPUT_DISABLED_BACKGROUND_COLOR
+
+  &[disabled]
+    cursor not-allowed
+    color INPUT_DISABLED_COLOR
+
+  &:focus
+    border-color INPUT_FOCUS_BORDER_COLOR
+    outline 0
+
+  &.form-ctl--error
+  &.error
+    background-color INPUT_ERROR_BACKGROUND_COLOR
+    border-color INPUT_ERROR_BORDER_COLOR
+
+
+textarea.form-ctl
+  height auto
+
+// moz Firefoxのheight切れ回避
+select.form-ctl
+  box-sizing padding-box
+
+// iOS appearance 回避
+input[type="search"]
+  -webkit-appearance none
+
+.form-ctl--static
+  display block
+  width 100%
+  padding INPUT_PADDING_VERTICAL_BASE 0
+
+//
+// Controls Sizing
+// ----------------------
+.form-ctl--sm
+  height INPUT_HEIGHT_SMALL
+  padding INPUT_PADDING_VERTICAL_SMALL INPUT_PADDING_HORIZONTAL_SMALL
+  font-size FONT_SIZE_SMALL
+
+.form-ctl--lg
+  height INPUT_HEIGHT_LARGE
+  padding INPUT_PADDING_VERTICAL_LARGE INPUT_PADDING_HORIZONTAL_LARGE
+  font-size FONT_SIZE_LARGE
+
+//
+// Radio button / Checkbox
+// ----------------------
+.form__radio
+.form__checkbox
+  position relative
+  margin-top 0
+  margin-bottom 0
+  .label
+    position relative
+    padding-left 24px
+    display inline-block
+    height INPUT_HEIGHT_BASE
+    line-height INPUT_HEIGHT_BASE
+    font-weight FONT_WEIGHT_NORMAL
+    cursor pointer
+
+    &:after
+    &:before
+      content ''
+      position absolute
+      left 0
+      top 50%
+
+    &:before
+      width 16px
+      height 16px
+      margin-top -9px
+      box-sizing border-box
+      background-color INPUT_CHECK_BACKGROUND_COLOR
+
+  [type='radio']
+  [type='checkbox']
+    &.form-ctl
+      opacity 0
+      box-shadow none
+      width auto
+      height auto
+      position absolute
+      top 3px
+      left 7px
+
+      &:not([disabled]):focus + .label
+      &:not([disabled]) + .label:hover
+        &:before
+          border-color INPUT_FOCUS_BORDER_COLOR
+
+      &[disabled] + .label
+        cursor not-allowed
+        color INPUT_DISABLED_COLOR
+        &:before
+          background-color INPUT_DISABLED_BACKGROUND_COLOR
+
+  .form-ctl--error
+  &.form-ctl--error
+  .error
+  &.error
+    .label:before
+      background-color INPUT_ERROR_BACKGROUND_COLOR
+      border-color INPUT_ERROR_BORDER_COLOR
+    [type='radio']:checked + .label:after
+      background-color INPUT_ERROR_BORDER_COLOR
+    [type='checkbox']:checked + .label:after
+      border-left-color INPUT_ERROR_BORDER_COLOR
+      border-bottom-color INPUT_ERROR_BORDER_COLOR
+
+  &--multiline
+    .label
+      height auto
+      line-height LINE_HEIGHT_BASE
+
+  // wrap by label tag only
+  &--fill
+    display block
+    width 100%
+
+  &--btn
+    display block
+    padding BUTTON_PADDING_VERTICAL_SMALL BUTTON_PADDING_HORIZONTAL_SMALL // フォーム要素の大きさを考慮しワンランク小さいサイズを指定
+    border 1px solid BUTTON_BORDER_COLOR_BASE
+    &:not([disabled]):focus
+    &:not([disabled]):hover
+      background-color alphan(INPUT_FOCUS_BORDER_COLOR, 8%)
+      border 1px solid alphan(INPUT_FOCUS_BORDER_COLOR, 25%)
+
+      [type='radio'] + .label
+      [type='checkbox'] + .label
+        &:before
+          border-color INPUT_FOCUS_BORDER_COLOR
+    &.checked
+      background-color alphan(INPUT_FOCUS_BORDER_COLOR, 20%)
+
+    &[disabled]
+      background-color INPUT_DISABLED_BACKGROUND_COLOR
+
+  &--box
+    display block
+    border 4px solid INPUT_BORDER_COLOR
+    padding 10px
+
+    &:hover
+    &:focus
+      border-color INPUT_FOCUS_BORDER_COLOR
+
+    &.checked
+    &.active
+      border-color INPUT_FOCUS_BORDER_COLOR
+      background-color alphan(INPUT_FOCUS_BORDER_COLOR, 10%)
+
+  .form-ctl__option
+    padding-left 24px
+
+label.form__radio
+label.form__checkbox
+  &:hover
+  &:focus
+    [type='radio']
+    [type='checkbox']
+      &.form-ctl:not([disabled]) + .label
+        &:before
+          border-color INPUT_FOCUS_BORDER_COLOR
+
+
+.form__radio
+  .label
+    &:before
+      border-radius 50%
+  [type='radio']:checked + .label:before
+    background-color INPUT_FOCUS_BORDER_COLOR
+  [type='radio']:checked + .label:after
+    content ''
+    position absolute
+    left 5px
+    width 6px
+    height 6px
+    margin-top -4px
+    background-color #fff
+    border-radius 50%
+
+.form__checkbox
+  [type='checkbox']:checked + .label:before
+    background-color INPUT_FOCUS_BORDER_COLOR
+    
+  [type='checkbox']:checked + .label:after
+    left 2px
+    width 12px
+    height 8px
+    margin-top -7px
+    border-left 2px solid #fff
+    border-bottom 2px solid #fff
+    transform rotate(-45deg)
+
+.form__radio
+.form__checkbox
+  &.form-ctl--sm
+  &.form-ctl--lg
+    padding 0
+    height auto
+  &.form-ctl--sm
+    .label
+      padding-left 20px
+      &:before
+        width 12px
+        height 12px
+        margin-top -7px
+    &.form__radio--btn
+    &.form__checkbox--btn
+      padding BUTTON_PADDING_VERTICAL_XSMALL BUTTON_PADDING_HORIZONTAL_XSMALL
+  &.form-ctl--lg
+    .label
+      padding-left 32px
+      &:before
+        width 24px
+        height 24px
+        margin-top -12px
+    &.form__radio--btn
+    &.form__checkbox--btn
+      padding BUTTON_PADDING_VERTICAL_BASE BUTTON_PADDING_HORIZONTAL_BASE
+  &.form-ctl--xl
+    .label
+      padding-left 44px
+      &:before
+        width 36px
+        height 36px
+        margin-top -18px
+        border-width INPUT_BORDER_WIDTH*2
+
+.form__radio.form-ctl--sm
+  [type='radio']:checked + .label:after
+    left 4px
+    width 4px
+    height 4px
+    margin-top -3px
+
+.form__checkbox.form-ctl--sm
+  [type='checkbox']:checked + .label:after
+    left 2px
+    width 10px
+    height 6px
+    margin-top -6px
+
+.form__radio.form-ctl--lg
+  [type='radio']:checked + .label:after
+    left 7px
+    width 10px
+    height 10px
+    margin-top -5px
+
+.form__checkbox.form-ctl--lg
+  [type='checkbox']:checked + .label:after
+    left 3px
+    width 20px
+    height 12px
+    margin-top -10px
+    border-left-width 3px
+    border-bottom-width 3px
+
+.form__radio.form-ctl--xl
+  [type='radio']:checked + .label:after
+    left 7px
+    width 22px
+    height 22px
+    margin-top -11px
+
+.form__checkbox.form-ctl--xl
+  [type='checkbox']:checked + .label:after
+    left 3px
+    width 34px
+    height 20px
+    margin-top -17px
+    border-left-width 8px
+    border-bottom-width 8px
+
+//
+// Form parts
+// ----------------------
+// Error message
+.form-ctl__error
+  display inline-block
+  color INPUT_ERROR_COLOR
+  font-weight normal
+  margin 0
+  &:empty
+    display none
+
+.form-ctl__option
+  color COLOR_SUB_TEXT
+  font-size 86%
+  font-weight FONT_WEIGHT_NORMAL
+  margin-left .5em
+
+br + .form-ctl__option
+  margin-left 0
+
+//
+// Form Layout
+// ----------------------
+.form__item
+  margin-bottom 1.5rem
+
+// Inline form
+.form--inline
+  .form__item
+  .form-ctl
+    display inline-block
+    vertical-align middle
+  .form__item
+    margin-bottom 0
+  .form-ctl
+    width auto
+
+.form--horizontal
+  .form-ctl__label
+    width 100%
+    padding-top INPUT_PADDING_VERTICAL_BASE

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Facebook Like VS Reactions</title>
+    <link rel="stylesheet" href="./styles/entypo.css">
+    <link rel="stylesheet" href="./styles/app.css">
+  </head>
+  <body>
+    <div id="app">
+      <div id="config" :class="[openConfig ? 'open' : 'close']">
+        <button class="config__toggle" @click="toggleConfigOpen"><i class="icon-cog"></i></button>
+        <div class="config__container">
+          <div class="form__item">
+            <label for="input-accessToken">Access Token</label>
+            <input class="form-ctl" id="input-accessToken" type="text" v-model="accessToken">
+          </div>
+          <div class="form__item">
+            <label for="input-postId">Post ID</label>
+            <input class="form-ctl" id="input-postId" type="text" v-model="postId">
+          </div>
+          <hr>
+          <div class="form__item">
+            <label for="input-interval">Reactions</label>
+            <vue-add-reactions v-for="reaction in reactions" :reaction="reaction"></vue-add-reactions>
+            <button class="btn" @click="addReaction">Add Reaction</button>
+          </div>
+          <div class="form__item">
+            <label for="input-countdownMinutes">Countdown Minutes</label>
+            <select class="form-ctl" id="input-countdownMinutes" v-model="countdownMinutes" style="max-width: 8em">
+              <option v-for="min in selectableCountdownMinutes" value="min" v-text="min + ' min'"></option>
+            </select>
+          </div>
+          <hr>
+          <div class="form__item">
+            <label for="input-interval">Update Interval</label>
+            <select class="form-ctl" id="input-interval" v-model="intervalSec" style="max-width: 8em">
+              <option value="1.5">1.5 sec</option>
+              <option value="2">2 sec</option>
+              <option value="3">3 sec</option>
+              <option value="5">5 sec</option>
+            </select>
+          </div>
+          <div class="form__item">
+            <label for="input-screenSize">Display Screen Size</label>
+            <select class="form-ctl" id="input-screenSize" v-model="screenSize">
+              <option value="720p">720p (1280px * 720px)</option>
+              <option value="1080i">1080i (1920px * 1080px)</option>
+            </select>
+          </div>
+          <hr>
+        </div>
+      </div>
+      <div id="screen" :style="{width: resolution.width + 'px',height: resolution.height + 'px',marginTop: -(resolution.height / 2) + 'px',marginLeft: -(resolution.width / 2) + 'px'}">
+        <div class="screen__reactions">
+          <div class="reaction" v-for="reaction in reactions">
+            <div class="reaction__media" v-if="reaction.name">
+              <div class="reaction__emoji"><img :src="'emojis/' + reaction.name + '.png'"></div><span class="reaction__counter" v-text="reaction.count"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <template id="vue-add-reactions">
+      <select class="form-ctl" v-model="reaction.name">
+        <option v-for="r in selectableReactions" :value="r">{{r.toUpperCase()}}</option>
+      </select>
+    </template>
+    <script src="./scripts/vendor/vue.js"></script>
+    <script src="./scripts/main.js"></script>
+  </body>
+</html>

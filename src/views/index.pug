@@ -1,0 +1,66 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Facebook Like VS Reactions
+    link(rel='stylesheet', href='./styles/entypo.css')
+    link(rel='stylesheet', href='./styles/app.css')
+
+  body
+    #app
+      #config(:class="[openConfig ? 'open' : 'close']")
+        button.config__toggle(@click='toggleConfigOpen')
+          i.icon-cog
+        .config__container
+          .form__item
+            label(for='input-accessToken') Access Token
+            input#input-accessToken.form-ctl(type='text', v-model='accessToken')
+
+          .form__item
+            label(for='input-postId') Post ID
+            input#input-postId.form-ctl(type='text', v-model='postId')
+          hr
+          .form__item
+            label(for='input-interval') Reactions
+            vue-add-reactions(v-for='reaction in reactions', :reaction='reaction')
+            button.btn(@click='addReaction') Add Reaction
+          .form__item
+            label(for='input-countdownMinutes') Countdown Minutes
+            select#input-countdownMinutes.form-ctl(v-model='countdownMinutes', style='max-width: 8em;')
+              option(v-for="min in selectableCountdownMinutes", value='min', v-text="min + ' min'")
+          hr
+          .form__item
+            label(for='input-interval') Update Interval
+            select#input-interval.form-ctl(v-model='intervalSec', style='max-width: 8em;')
+              option(value='1.5') 1.5 sec
+              option(value='2') 2 sec
+              option(value='3') 3 sec
+              option(value='5') 5 sec
+          .form__item
+            label(for='input-screenSize') Display Screen Size
+            select#input-screenSize.form-ctl(v-model='screenSize')
+              option(value='720p') 720p (1280px * 720px)
+              option(value='1080i') 1080i (1920px * 1080px)
+          hr
+
+      #screen(:style="{" +
+      "width: resolution.width + 'px'," +
+      "height: resolution.height + 'px'," +
+      "marginTop: -(resolution.height / 2) + 'px'," +
+      "marginLeft: -(resolution.width / 2) + 'px'" +
+      "}")
+        .screen__reactions
+          .reaction(v-for='reaction in reactions')
+            .reaction__media(v-if='reaction.name')
+              .reaction__emoji
+                img(:src="'emojis/' + reaction.name + '.png'")
+              span.reaction__counter(v-text='reaction.count')
+
+    template(id='vue-add-reactions')
+      select.form-ctl(v-model='reaction.name')
+        option(v-for='r in selectableReactions', :value='r') {{r.toUpperCase()}}
+
+
+    script(src='./scripts/vendor/vue.js')
+    script(src='./scripts/main.js')
+
