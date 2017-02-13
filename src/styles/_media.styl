@@ -1,0 +1,54 @@
+//
+// Media object
+// .c-media
+// ==============================================
+
+.c-media
+  zoom 1
+  display block
+  overflow hidden
+  // media object を縦に並べるときのマージン
+  margin-top 1.5rem
+  // ul リストスタイル解除用
+  padding-left 0
+  list-style none
+
+  &:first-child
+    margin-top 0
+
+  &__body
+    zoom 1
+    overflow hidden
+    width 10000px
+
+  &__heading
+    margin-top 0
+    margin-bottom .25em
+
+  &__left
+    padding-right 1rem
+
+  &__right
+    padding-left 1rem
+
+  &__left
+  &__right
+  &__body
+    display table-cell
+    vertical-align top
+
+  &--middle
+    vertical-align middle
+
+  &--top
+    vertical-align middle
+
+.c-media--block-sm
+  @media (max-width: SCREEN_SM_MAX)
+    display block
+.c-media--block-md
+  @media (max-width: SCREEN_MD_MIN) and (max-width: SCREEN_MD_MAX)
+    display block
+.c-media--block-lg
+  @media (min-width: SCREEN_LG_MIN) and (max-width: SCREEN_LG_MAX)
+    display block
