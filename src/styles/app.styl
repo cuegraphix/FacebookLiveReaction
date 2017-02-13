@@ -64,20 +64,27 @@ button
   border-radius 0 4px 4px 0
   padding 8px 4px
 
-#screen
-  background-color #000
+.screen
+  background url(../images/bg-tom.png) repeat #000
   position absolute
   top 50%
   left 50%
   box-shadow 0 0 4px rgba(0, 0, 0, .6)
+.screen--black
+  background-color #101010
 
 .screen__reactions
+  position absolute
   display table
   width 100%
 
+.screen__reactions--bottom
+  bottom 0
+  padding 0 50px 20px
+
 .reaction
   display table-cell
-  padding 5px
+  padding 10px
 
 .reaction__media
   display table

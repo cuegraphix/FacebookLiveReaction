@@ -51,8 +51,8 @@
           <hr>
         </div>
       </div>
-      <div id="screen" :style="{width: resolution.width + 'px',height: resolution.height + 'px',marginTop: -(resolution.height / 2) + 'px',marginLeft: -(resolution.width / 2) + 'px'}">
-        <div class="screen__reactions">
+      <div class="screen screen--black" id="screen" :style="{width: resolution.width + 'px',height: resolution.height + 'px',marginTop: -(resolution.height / 2) + 'px',marginLeft: -(resolution.width / 2) + 'px'}">
+        <div class="screen__reactions screen__reactions--bottom">
           <div class="reaction" v-for="reaction in reactions">
             <div class="reaction__media" v-if="reaction.name">
               <div class="reaction__emoji"><img :src="'emojis/' + reaction.name + '.png'"></div><span class="reaction__counter" v-text="reaction.count"></span>

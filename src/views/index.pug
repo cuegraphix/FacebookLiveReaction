@@ -43,13 +43,13 @@ html
               option(value='1080i') 1080i (1920px * 1080px)
           hr
 
-      #screen(:style="{" +
+      #screen.screen.screen--black(:style="{" +
       "width: resolution.width + 'px'," +
       "height: resolution.height + 'px'," +
       "marginTop: -(resolution.height / 2) + 'px'," +
       "marginLeft: -(resolution.width / 2) + 'px'" +
       "}")
-        .screen__reactions
+        .screen__reactions.screen__reactions--bottom
           .reaction(v-for='reaction in reactions')
             .reaction__media(v-if='reaction.name')
               .reaction__emoji
