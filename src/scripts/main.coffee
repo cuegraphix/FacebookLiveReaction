@@ -28,8 +28,8 @@ Vue.component 'vue-add-reactions',
 app = new Vue
   el: '#app'
   data: ->
-    accessToken: '401082806580442|pn4rd5KTL8inXunCLxIxu-kVjVg',
-    postId: '1542659955761554',
+    accessToken: '',
+    postId: '',
     intervalSec: 3,
     screenSize: '720p'
     countdownMinutes: null
@@ -44,6 +44,9 @@ app = new Vue
     error: null
 
   computed:
+    isLocalStorage: ->
+      return window.localStorage isnt null
+
     isAccessible: ->
       return @accessToken and @postId and @reactions?.length > 0 and !@error
 
@@ -57,8 +60,12 @@ app = new Vue
       return (num * 5 for num in [36..1])
 
   watch:
-    accessToken: 'run'
-    postId: 'run'
+    accessToken: (val)->
+      window.localStorage.accessToken = val if @isLocalStorage
+      @run()
+    postId: (val)->
+      window.localStorage.postId = val if @isLocalStorage
+      @run()
 
   methods:
     run: ()->
@@ -122,7 +129,7 @@ app = new Vue
       @reactions.push {}
 
   mounted: ->
-    console.log 'mounted'
-    console.log @screenSize
-    console.log @$el
+    if @isLocalStorage
+      @accessToken = window.localStorage.accessToken
+      @postId = window.localStorage.postId
     @run()

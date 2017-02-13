@@ -32,8 +32,8 @@
     el: '#app',
     data: function() {
       return {
-        accessToken: '401082806580442|pn4rd5KTL8inXunCLxIxu-kVjVg',
-        postId: '1542659955761554',
+        accessToken: '',
+        postId: '',
         intervalSec: 3,
         screenSize: '720p',
         countdownMinutes: null,
@@ -51,6 +51,9 @@
       };
     },
     computed: {
+      isLocalStorage: function() {
+        return window.localStorage !== null;
+      },
       isAccessible: function() {
         var ref;
         return this.accessToken && this.postId && ((ref = this.reactions) != null ? ref.length : void 0) > 0 && !this.error;
@@ -74,8 +77,18 @@
       }
     },
     watch: {
-      accessToken: 'run',
-      postId: 'run'
+      accessToken: function(val) {
+        if (this.isLocalStorage) {
+          window.localStorage.accessToken = val;
+        }
+        return this.run();
+      },
+      postId: function(val) {
+        if (this.isLocalStorage) {
+          window.localStorage.postId = val;
+        }
+        return this.run();
+      }
     },
     methods: {
       run: function() {
@@ -167,9 +180,10 @@
       }
     },
     mounted: function() {
-      console.log('mounted');
-      console.log(this.screenSize);
-      console.log(this.$el);
+      if (this.isLocalStorage) {
+        this.accessToken = window.localStorage.accessToken;
+        this.postId = window.localStorage.postId;
+      }
       return this.run();
     }
   });
