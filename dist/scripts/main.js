@@ -25,6 +25,11 @@
       selectableReactions: function() {
         return REACTIONS;
       }
+    },
+    methods: {
+      removeReaction: function() {
+        return this.$parent.reactions.splice(this._uid - 1, 1);
+      }
     }
   });
 

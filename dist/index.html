@@ -19,11 +19,15 @@
             <label for="input-postId">Post ID</label>
             <input class="form-ctl" id="input-postId" type="text" v-model="postId">
           </div>
-          <hr>
+          <hr><strong>Reactions Setting</strong>
           <div class="form__item">
             <label for="input-interval">Reactions</label>
-            <vue-add-reactions v-for="reaction in reactions" :reaction="reaction"></vue-add-reactions>
-            <button class="btn" @click="addReaction">Add Reaction</button>
+            <div>
+              <vue-add-reactions v-for="reaction in reactions" :reaction="reaction"></vue-add-reactions>
+              <div class="c-media">
+                <button class="btn btn--clear btn--fill btn--icon-inline" @click="addReaction"><i class="icon-plus-circled" style="color:#2e7d32"></i>Add Reaction</button>
+              </div>
+            </div>
           </div>
           <div class="form__item">
             <label for="input-countdownMinutes">Countdown Minutes</label>
@@ -62,9 +66,16 @@
       </div>
     </div>
     <template id="vue-add-reactions">
-      <select class="form-ctl" v-model="reaction.name">
-        <option v-for="r in selectableReactions" :value="r">{{r.toUpperCase()}}</option>
-      </select>
+      <div class="c-media">
+        <div class="c-media__left">
+          <button class="btn btn--clear" style="color:#b71c1c" @click="removeReaction"><i class="icon-minus-circled"></i></button>
+        </div>
+        <div class="c-media__body">
+          <select class="form-ctl" v-model="reaction.name">
+            <option v-for="r in selectableReactions" :value="r">{{r.toUpperCase()}}</option>
+          </select>
+        </div>
+      </div>
     </template>
     <script src="./scripts/vendor/vue.js"></script>
     <script src="./scripts/main.js"></script>

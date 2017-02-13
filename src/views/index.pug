@@ -20,10 +20,15 @@ html
             label(for='input-postId') Post ID
             input#input-postId.form-ctl(type='text', v-model='postId')
           hr
+          strong Reactions Setting
           .form__item
             label(for='input-interval') Reactions
-            vue-add-reactions(v-for='reaction in reactions', :reaction='reaction')
-            button.btn(@click='addReaction') Add Reaction
+            div
+              vue-add-reactions(v-for='reaction in reactions', :reaction='reaction')
+              .c-media
+                button.btn.btn--clear.btn--fill.btn--icon-inline(@click='addReaction')
+                  i.icon-plus-circled(style="color:#2e7d32;")
+                  | Add Reaction
           .form__item
             label(for='input-countdownMinutes') Countdown Minutes
             select#input-countdownMinutes.form-ctl(v-model='countdownMinutes', style='max-width: 8em;')
@@ -57,8 +62,13 @@ html
               span.reaction__counter(v-text='reaction.count')
 
     template(id='vue-add-reactions')
-      select.form-ctl(v-model='reaction.name')
-        option(v-for='r in selectableReactions', :value='r') {{r.toUpperCase()}}
+      .c-media
+        .c-media__left
+          button.btn.btn--clear(style="color:#b71c1c", @click="removeReaction")
+            i.icon-minus-circled
+        .c-media__body
+          select.form-ctl(v-model='reaction.name')
+            option(v-for='r in selectableReactions', :value='r') {{r.toUpperCase()}}
 
 
     script(src='./scripts/vendor/vue.js')

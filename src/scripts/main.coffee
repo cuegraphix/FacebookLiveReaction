@@ -24,6 +24,9 @@ Vue.component 'vue-add-reactions',
     selectableReactions: ->
       return REACTIONS
 
+  methods:
+    removeReaction: ->
+      @$parent.reactions.splice @_uid - 1, 1
 
 app = new Vue
   el: '#app'
