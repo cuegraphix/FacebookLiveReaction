@@ -104,6 +104,7 @@ app = new Vue
       fields = []
       for r in @reactions
         continue unless r.name
+        continue if r.name is 'undefined'
         continue if fields.indexOf(r.name) >= 0
         fields.push r.name
       fieldsString = fields.map (e)->

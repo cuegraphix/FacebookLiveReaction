@@ -142,6 +142,9 @@
           if (!r.name) {
             continue;
           }
+          if (r.name === 'undefined') {
+            continue;
+          }
           if (fields.indexOf(r.name) >= 0) {
             continue;
           }
