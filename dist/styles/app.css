@@ -1314,13 +1314,14 @@ button {
   padding: 10px;
 }
 .reaction__media {
-  display: table;
+  display: block;
+  text-align: center;
   width: 100%;
   background-color: #fff;
   border-radius: 2px;
 }
 .reaction__emoji {
-  display: table-cell;
+  display: inline-block;
   vertical-align: middle;
   padding: 8px;
 }
@@ -1329,10 +1330,9 @@ button {
   height: auto;
 }
 .reaction__counter {
-  display: table-cell;
+  display: inline-block;
   vertical-align: middle;
   padding: 8px;
   font-size: 3.6rem;
   color: #222;
-  width: 10000px;
 }
