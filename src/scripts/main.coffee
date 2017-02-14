@@ -26,8 +26,6 @@ Vue.component 'vue-add-reactions',
 
   methods:
     remove: ->
-      console.log 'onClickRemoveReaction'
-      console.log @reaction._uid
       @$emit 'remove', @reaction._uid
 
   created: ->
@@ -151,10 +149,8 @@ app = new Vue
         count: 0
 
     removeReaction: (id)->
-      console.log id
       return unless id
       for r, i in @reactions
-        console.log r
         if r._uid is id
           @reactions.splice i, 1
           return
