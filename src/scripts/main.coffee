@@ -48,7 +48,7 @@ app = new Vue
 
   computed:
     isLocalStorage: ->
-      return window.localStorage isnt null
+      return localStorage isnt null
 
     isAccessible: ->
       return @accessToken and @postId and @reactions?.length > 0 and !@error
@@ -64,10 +64,10 @@ app = new Vue
 
   watch:
     accessToken: (val)->
-      window.localStorage.accessToken = val if @isLocalStorage
+      localStorage.accessToken = val if @isLocalStorage
       @run()
     postId: (val)->
-      window.localStorage.postId = val if @isLocalStorage
+      localStorage.postId = val if @isLocalStorage
       @run()
 
   methods:
@@ -133,6 +133,6 @@ app = new Vue
 
   mounted: ->
     if @isLocalStorage
-      @accessToken = window.localStorage.accessToken
-      @postId = window.localStorage.postId
+      @accessToken = localStorage.accessToken if localStorage.accessToken
+      @postId = localStorage.postId if localStorage.postId
     @run()

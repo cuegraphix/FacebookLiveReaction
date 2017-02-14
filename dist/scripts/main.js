@@ -57,7 +57,7 @@
     },
     computed: {
       isLocalStorage: function() {
-        return window.localStorage !== null;
+        return localStorage !== null;
       },
       isAccessible: function() {
         var ref;
@@ -84,13 +84,13 @@
     watch: {
       accessToken: function(val) {
         if (this.isLocalStorage) {
-          window.localStorage.accessToken = val;
+          localStorage.accessToken = val;
         }
         return this.run();
       },
       postId: function(val) {
         if (this.isLocalStorage) {
-          window.localStorage.postId = val;
+          localStorage.postId = val;
         }
         return this.run();
       }
@@ -186,8 +186,12 @@
     },
     mounted: function() {
       if (this.isLocalStorage) {
-        this.accessToken = window.localStorage.accessToken;
-        this.postId = window.localStorage.postId;
+        if (localStorage.accessToken) {
+          this.accessToken = localStorage.accessToken;
+        }
+        if (localStorage.postId) {
+          this.postId = localStorage.postId;
+        }
       }
       return this.run();
     }
