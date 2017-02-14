@@ -24,19 +24,34 @@ Vue.component 'vue-add-reactions',
     selectableReactions: ->
       return REACTIONS
 
+  methods:
+    remove: ->
+      @$emit 'remove', @reaction._uid
+
+  created: ->
+    @reaction._uid = new Date().getTime().toString(16)
+
+Vue.component 'vue-screen-reaction',
+  template: '#vue-screen-reaction'
+  props:
+    reaction: Object
+    padding: String
+    fontSize: String
 
 app = new Vue
   el: '#app'
   data: ->
-    accessToken: '401082806580442|pn4rd5KTL8inXunCLxIxu-kVjVg',
-    postId: '1542659955761554',
+    accessToken: '',
+    postId: '',
     intervalSec: 3,
     screenSize: '720p'
     countdownMinutes: null
     reactions: [
-      { name: REACTIONS[0] }
-      { name: REACTIONS[1] }
+      { name: REACTIONS[0], count: 0 }
+      { name: REACTIONS[1], count: 0 }
     ]
+    reactionFontSize: '36'
+    reactionPadding: '10'
 
     _timeoutId: null
     openConfig: true
@@ -44,6 +59,9 @@ app = new Vue
     error: null
 
   computed:
+    isLocalStorage: ->
+      return localStorage isnt null
+
     isAccessible: ->
       return @accessToken and @postId and @reactions?.length > 0 and !@error
 
@@ -57,8 +75,12 @@ app = new Vue
       return (num * 5 for num in [36..1])
 
   watch:
-    accessToken: 'run'
-    postId: 'run'
+    accessToken: (val)->
+      localStorage.accessToken = val if @isLocalStorage
+      @run()
+    postId: (val)->
+      localStorage.postId = val if @isLocalStorage
+      @run()
 
   methods:
     run: ()->
@@ -85,6 +107,7 @@ app = new Vue
       fields = []
       for r in @reactions
         continue unless r.name
+        continue if r.name is 'undefined'
         continue if fields.indexOf(r.name) >= 0
         fields.push r.name
       fieldsString = fields.map (e)->
@@ -106,7 +129,9 @@ app = new Vue
 
           for r, index in @reactions
             if r.name
-              @$set @reactions[index], "count", res[@postId]["reactions_#{r.name.toLowerCase()}"].summary.total_count
+              reactionResult = res[@postId]?["reactions_#{r.name.toLowerCase()}"]
+              if reactionResult
+                @$set @reactions[index], "count", reactionResult.summary.total_count
         else
           @stop()
           alert res.error?.message
@@ -119,10 +144,20 @@ app = new Vue
       @openConfig = !@openConfig
 
     addReaction: ->
-      @reactions.push {}
+      @reactions.push
+        name: 'undefined'
+        count: 0
+
+    removeReaction: (id)->
+      return unless id
+      for r, i in @reactions
+        if r._uid is id
+          @reactions.splice i, 1
+          return
+
 
   mounted: ->
-    console.log 'mounted'
-    console.log @screenSize
-    console.log @$el
+    if @isLocalStorage
+      @accessToken = localStorage.accessToken if localStorage.accessToken
+      @postId = localStorage.postId if localStorage.postId
     @run()

@@ -1,0 +1,243 @@
+//
+// Buttons
+// ==============================================
+
+btnSkin(
+  color = BUTTON_COLOR_BASE,
+  backgroundColor = BUTTON_BACKGROUND_COLOR_BASE,
+  borderColor = BUTTON_BORDER_COLOR_BASE,
+  hoverDarken = 6
+  )
+  color color
+  background-color backgroundColor
+  border-color borderColor
+  &:link
+  &:visited
+    color color
+  &:hover
+  &:focus
+  &.focus
+    color color
+    background-color backgroundColor is 'transparent' ? transparent : darken(backgroundColor, hoverDarken)
+    border-color borderColor is 'transparent' ? transparent : darken(borderColor, hoverDarken)
+
+  &.c-btn--inverse
+    color backgroundColor
+    background-color transparent
+    border-color backgroundColor
+    &:hover
+    &:focus
+    &.focus
+      color backgroundColor is 'transparent' ? transparent : darken(backgroundColor, hoverDarken)
+      border-color backgroundColor is 'transparent' ? transparent : darken(backgroundColor, hoverDarken)
+
+
+//
+// Button Base
+// ----------------------
+.btn
+  display inline-block
+  margin-bottom 0
+  font-weight FONT_WEIGHT_NORMAL
+  font-size FONT_SIZE_BASE
+  line-height normal
+  text-align center
+  vertical-align middle
+  letter-spacing .5px
+  text-decoration none
+  padding BUTTON_PADDING_VERTICAL_BASE BUTTON_PADDING_HORIZONTAL_BASE
+  border 1px solid BUTTON_BORDER_COLOR_BASE
+  border-radius BORDER_RADIUS_BASE
+  background-color BUTTON_BACKGROUND_COLOR_BASE
+  color BUTTON_COLOR_BASE
+  white-space nowrap
+
+  user-select none
+  touch-action manipulation
+  outline 0
+  -webkit-tap-highlight-color transparent
+
+  text-shadow: none
+
+  transition background-color .15s ease-out
+
+  // TODO: tab-focus
+
+  &:hover
+  &:focus
+  &.focus
+    text-decoration none
+    color BUTTON_COLOR_BASE
+    background-color darken(BUTTON_BACKGROUND_COLOR_BASE, 6%)
+    if BUTTON_BORDER_COLOR_BASE isnt transparent
+      border-color darken(BUTTON_BORDER_COLOR_BASE, 6%)
+
+
+  &.disabled
+  &[disabled]
+  &.disabled:hover
+  &[disabled]:hover
+  &.disabled:focus
+  &[disabled]:focus
+    color BUTTON_DISABLED_COLOR_BASE
+    background-color BUTTON_DISABLED_BACKGROUND_COLOR_BASE
+    border-color BUTTON_DISABLED_BORDER_COLOR_BASE
+
+
+//
+// Button Skins
+// ----------------------
+.btn--default
+  btnSkin(BUTTON_DEFAULT_COLOR, BUTTON_DEFAULT_BACKGROUND_COLOR, BUTTON_DEFAULT_BORDER_COLOR)
+
+.btn--clear
+  btnSkin(BUTTON_DEFAULT_COLOR, transparent, transparent)
+  &:hover
+  &:focus
+  &.focus
+    background-color rgba(255, 255, 255, .1)
+
+.btn--primary
+.btn.on
+  btnSkin(BUTTON_PRIMARY_COLOR, BUTTON_PRIMARY_BACKGROUND_COLOR, BUTTON_PRIMARY_BORDER_COLOR)
+
+.btn--secondary
+  btnSkin(BUTTON_SECONDARY_COLOR, BUTTON_SECONDARY_BACKGROUND_COLOR, BUTTON_SECONDARY_BORDER_COLOR)
+
+.btn--action
+  btnSkin(BUTTON_ACTION_COLOR, BUTTON_ACTION_BACKGROUND_COLOR, BUTTON_ACTION_BORDER_COLOR)
+
+.btn--alert
+  btnSkin(BUTTON_ALERT_COLOR, BUTTON_ALERT_BACKGROUND_COLOR, BUTTON_ALERT_BORDER_COLOR)
+
+// Invert
+.btn--primary-invert
+  btnSkin(BUTTON_PRIMARY_BACKGROUND_COLOR, transparent, BUTTON_PRIMARY_BACKGROUND_COLOR)
+
+.btn--secondary-invert
+  btnSkin(BUTTON_SECONDARY_BACKGROUND_COLOR, transparent, BUTTON_SECONDARY_BACKGROUND_COLOR)
+
+.btn--action-invert
+  btnSkin(BUTTON_ACTION_BACKGROUND_COLOR, transparent, BUTTON_ACTION_BACKGROUND_COLOR)
+
+.btn--alert-invert
+  btnSkin(BUTTON_ALERT_BACKGROUND_COLOR, transparent, BUTTON_ALERT_BACKGROUND_COLOR)
+
+//
+// Button Sizing
+// ----------------------
+.btn--xs
+  font-size FONT_SIZE_XSMALL
+  padding BUTTON_PADDING_VERTICAL_XSMALL BUTTON_PADDING_HORIZONTAL_XSMALL
+
+.btn--sm
+  font-size FONT_SIZE_SMALL
+  padding BUTTON_PADDING_VERTICAL_SMALL BUTTON_PADDING_HORIZONTAL_SMALL
+
+.btn--lg
+  font-size FONT_SIZE_LARGE
+  padding BUTTON_PADDING_VERTICAL_LARGE BUTTON_PADDING_HORIZONTAL_LARGE
+
+.btn--xl
+  font-size FONT_SIZE_XLARGE
+  padding BUTTON_PADDING_VERTICAL_XLARGE BUTTON_PADDING_HORIZONTAL_XLARGE
+
+.btn--fill
+  width 100%
+  padding-left 0
+  padding-right 0
+
+
+//
+// Button with Icons
+// ----------------------
+.btn--icon
+.btn--icon-left
+.btn--icon-right
+  line-height inherit
+  [class^="icon-"]
+  [class*=" icon-"]
+  .icon
+    font-size 1.2em
+    margin-top .1em
+.btn--icon
+.btn--icon-left
+  [class^="icon-"]
+  [class*=" icon-"]
+  .icon
+    float left
+    margin-right .25em
+.btn--icon-right
+  [class^="icon-"]
+  [class*=" icon-"]
+  .icon
+    float right
+    margin-left .25em
+
+
+
+
+
+.btn--icon-inline
+  [class^="icon-"]
+  [class*=" icon-"]
+  .icon
+    font-size 1.2em
+    margin 0 .3em 5px 0
+    position relative
+    top .1em
+    display inline-block
+
+//
+// Button groups
+// ----------------------
+.btn-group
+  position relative
+  display inline-block
+  vertical-align middle
+  > .btn
+    position relative
+    float left
+    &:hover
+    &:focus
+    &:active
+    &.active
+      z-index 2
+
+  .btn + .btn
+  .btn + .btn-group
+  .btn-group + .btn
+  .btn-group + .btn-group
+    margin-left -1px
+
+  > .btn
+    &:not(:first-child):not(:last-child)
+      border-radius 0
+    &:first-child
+      margin-left 0
+      &:not(:last-child)
+        border-top-right-radius 0
+        border-bottom-right-radius 0
+    &:last-child
+      &:not(:first-child)
+        border-top-left-radius 0
+        border-bottom-left-radius 0
+
+  > .btn-group
+    float left
+
+    &:not(:first-child):not(:last-child)
+      border-radius 0
+    &:first-child
+      &:not(:last-child)
+        > .btn:last-child
+          border-top-right-radius 0
+          border-bottom-right-radius 0
+    &:last-child
+      &:not(:first-child)
+        > .btn:first-child
+          border-top-left-radius 0
+          border-bottom-left-radius 0
+
+
+

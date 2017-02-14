@@ -25,6 +25,23 @@
       selectableReactions: function() {
         return REACTIONS;
       }
+    },
+    methods: {
+      remove: function() {
+        return this.$emit('remove', this.reaction._uid);
+      }
+    },
+    created: function() {
+      return this.reaction._uid = new Date().getTime().toString(16);
+    }
+  });
+
+  Vue.component('vue-screen-reaction', {
+    template: '#vue-screen-reaction',
+    props: {
+      reaction: Object,
+      padding: String,
+      fontSize: String
     }
   });
 
@@ -32,18 +49,22 @@
     el: '#app',
     data: function() {
       return {
-        accessToken: '401082806580442|pn4rd5KTL8inXunCLxIxu-kVjVg',
-        postId: '1542659955761554',
+        accessToken: '',
+        postId: '',
         intervalSec: 3,
         screenSize: '720p',
         countdownMinutes: null,
         reactions: [
           {
-            name: REACTIONS[0]
+            name: REACTIONS[0],
+            count: 0
           }, {
-            name: REACTIONS[1]
+            name: REACTIONS[1],
+            count: 0
           }
         ],
+        reactionFontSize: '36',
+        reactionPadding: '10',
         _timeoutId: null,
         openConfig: true,
         running: false,
@@ -51,6 +72,9 @@
       };
     },
     computed: {
+      isLocalStorage: function() {
+        return localStorage !== null;
+      },
       isAccessible: function() {
         var ref;
         return this.accessToken && this.postId && ((ref = this.reactions) != null ? ref.length : void 0) > 0 && !this.error;
@@ -64,9 +88,9 @@
       selectableCountdownMinutes: function() {
         var num;
         return (function() {
-          var i, results;
+          var j, results;
           results = [];
-          for (num = i = 36; i >= 1; num = --i) {
+          for (num = j = 36; j >= 1; num = --j) {
             results.push(num * 5);
           }
           return results;
@@ -74,8 +98,18 @@
       }
     },
     watch: {
-      accessToken: 'run',
-      postId: 'run'
+      accessToken: function(val) {
+        if (this.isLocalStorage) {
+          localStorage.accessToken = val;
+        }
+        return this.run();
+      },
+      postId: function(val) {
+        if (this.isLocalStorage) {
+          localStorage.postId = val;
+        }
+        return this.run();
+      }
     },
     methods: {
       run: function() {
@@ -102,13 +136,16 @@
         return this.running = false;
       },
       updateCount: function() {
-        var fields, fieldsString, i, len, params, query, r, ref, xhr;
+        var fields, fieldsString, j, len, params, query, r, ref, xhr;
         xhr = new XMLHttpRequest();
         fields = [];
         ref = this.reactions;
-        for (i = 0, len = ref.length; i < len; i++) {
-          r = ref[i];
+        for (j = 0, len = ref.length; j < len; j++) {
+          r = ref[j];
           if (!r.name) {
+            continue;
+          }
+          if (r.name === 'undefined') {
             continue;
           }
           if (fields.indexOf(r.name) >= 0) {
@@ -131,15 +168,20 @@
         xhr.open('GET', FACEBOOK_GRAPH_API_URL + "?" + query, true);
         xhr.onload = (function(_this) {
           return function() {
-            var index, j, len1, ref1, ref2, res, results;
+            var index, l, len1, reactionResult, ref1, ref2, ref3, res, results;
             res = JSON.parse(xhr.responseText);
             if (xhr.status === 200 && xhr.status < 400) {
               ref1 = _this.reactions;
               results = [];
-              for (index = j = 0, len1 = ref1.length; j < len1; index = ++j) {
+              for (index = l = 0, len1 = ref1.length; l < len1; index = ++l) {
                 r = ref1[index];
                 if (r.name) {
-                  results.push(_this.$set(_this.reactions[index], "count", res[_this.postId]["reactions_" + (r.name.toLowerCase())].summary.total_count));
+                  reactionResult = (ref2 = res[_this.postId]) != null ? ref2["reactions_" + (r.name.toLowerCase())] : void 0;
+                  if (reactionResult) {
+                    results.push(_this.$set(_this.reactions[index], "count", reactionResult.summary.total_count));
+                  } else {
+                    results.push(void 0);
+                  }
                 } else {
                   results.push(void 0);
                 }
@@ -147,7 +189,7 @@
               return results;
             } else {
               _this.stop();
-              return alert((ref2 = res.error) != null ? ref2.message : void 0);
+              return alert((ref3 = res.error) != null ? ref3.message : void 0);
             }
           };
         })(this);
@@ -163,13 +205,35 @@
         return this.openConfig = !this.openConfig;
       },
       addReaction: function() {
-        return this.reactions.push({});
+        return this.reactions.push({
+          name: 'undefined',
+          count: 0
+        });
+      },
+      removeReaction: function(id) {
+        var i, j, len, r, ref;
+        if (!id) {
+          return;
+        }
+        ref = this.reactions;
+        for (i = j = 0, len = ref.length; j < len; i = ++j) {
+          r = ref[i];
+          if (r._uid === id) {
+            this.reactions.splice(i, 1);
+            return;
+          }
+        }
       }
     },
     mounted: function() {
-      console.log('mounted');
-      console.log(this.screenSize);
-      console.log(this.$el);
+      if (this.isLocalStorage) {
+        if (localStorage.accessToken) {
+          this.accessToken = localStorage.accessToken;
+        }
+        if (localStorage.postId) {
+          this.postId = localStorage.postId;
+        }
+      }
       return this.run();
     }
   });
