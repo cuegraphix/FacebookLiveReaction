@@ -170,7 +170,7 @@
         xhr.open('GET', FACEBOOK_GRAPH_API_URL + "?" + query, true);
         xhr.onload = (function(_this) {
           return function() {
-            var index, l, len1, ref1, ref2, res, results;
+            var index, l, len1, reactionResult, ref1, ref2, ref3, res, results;
             res = JSON.parse(xhr.responseText);
             if (xhr.status === 200 && xhr.status < 400) {
               ref1 = _this.reactions;
@@ -178,7 +178,12 @@
               for (index = l = 0, len1 = ref1.length; l < len1; index = ++l) {
                 r = ref1[index];
                 if (r.name) {
-                  results.push(_this.$set(_this.reactions[index], "count", res[_this.postId]["reactions_" + (r.name.toLowerCase())].summary.total_count));
+                  reactionResult = (ref2 = res[_this.postId]) != null ? ref2["reactions_" + (r.name.toLowerCase())] : void 0;
+                  if (reactionResult) {
+                    results.push(_this.$set(_this.reactions[index], "count", reactionResult.summary.total_count));
+                  } else {
+                    results.push(void 0);
+                  }
                 } else {
                   results.push(void 0);
                 }
@@ -186,7 +191,7 @@
               return results;
             } else {
               _this.stop();
-              return alert((ref2 = res.error) != null ? ref2.message : void 0);
+              return alert((ref3 = res.error) != null ? ref3.message : void 0);
             }
           };
         })(this);

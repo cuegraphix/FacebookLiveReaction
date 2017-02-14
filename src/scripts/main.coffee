@@ -131,7 +131,9 @@ app = new Vue
 
           for r, index in @reactions
             if r.name
-              @$set @reactions[index], "count", res[@postId]["reactions_#{r.name.toLowerCase()}"].summary.total_count
+              reactionResult = res[@postId]?["reactions_#{r.name.toLowerCase()}"]
+              if reactionResult
+                @$set @reactions[index], "count", reactionResult.summary.total_count
         else
           @stop()
           alert res.error?.message
