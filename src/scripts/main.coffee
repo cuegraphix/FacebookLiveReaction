@@ -35,8 +35,8 @@ Vue.component 'vue-screen-reaction',
   template: '#vue-screen-reaction'
   props:
     reaction: Object
-    padding: Number
-    fontSize: Number
+    padding: String
+    fontSize: String
 
 app = new Vue
   el: '#app'
@@ -50,8 +50,8 @@ app = new Vue
       { name: REACTIONS[0], count: 0 }
       { name: REACTIONS[1], count: 0 }
     ]
-    reactionFontSize: 36
-    reactionPadding: 10
+    reactionFontSize: '36'
+    reactionPadding: '10'
 
     _timeoutId: null
     openConfig: true

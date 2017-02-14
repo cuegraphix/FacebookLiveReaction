@@ -28,8 +28,6 @@
     },
     methods: {
       remove: function() {
-        console.log('onClickRemoveReaction');
-        console.log(this.reaction._uid);
         return this.$emit('remove', this.reaction._uid);
       }
     },
@@ -42,8 +40,8 @@
     template: '#vue-screen-reaction',
     props: {
       reaction: Object,
-      padding: Number,
-      fontSize: Number
+      padding: String,
+      fontSize: String
     }
   });
 
@@ -65,8 +63,8 @@
             count: 0
           }
         ],
-        reactionFontSize: 36,
-        reactionPadding: 10,
+        reactionFontSize: '36',
+        reactionPadding: '10',
         _timeoutId: null,
         openConfig: true,
         running: false,
@@ -214,14 +212,12 @@
       },
       removeReaction: function(id) {
         var i, j, len, r, ref;
-        console.log(id);
         if (!id) {
           return;
         }
         ref = this.reactions;
         for (i = j = 0, len = ref.length; j < len; i = ++j) {
           r = ref[i];
-          console.log(r);
           if (r._uid === id) {
             this.reactions.splice(i, 1);
             return;
