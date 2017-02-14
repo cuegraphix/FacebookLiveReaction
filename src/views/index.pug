@@ -78,7 +78,7 @@ html
             option(v-for='r in selectableReactions', :value='r') {{r.toUpperCase()}}
 
     template(id='vue-screen-reaction')
-      .reaction(:style="{ paddingLeft: padding + 'px', paddingRight: padding + 'px' }")
+      .reaction(:style="{ paddingLeft: padding + 'px', paddingRight: padding + 'px', width: (100 / $parent.reactions.length) + '%' }")
         .reaction__media
           .reaction__emoji
             img(:src="'emojis/' + (reaction.name || 'undefined') + '.png'", :style="{ maxWidth: fontSize + 'px' }")

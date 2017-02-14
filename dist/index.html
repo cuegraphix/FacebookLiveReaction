@@ -91,7 +91,7 @@
       </div>
     </template>
     <template id="vue-screen-reaction">
-      <div class="reaction" :style="{ paddingLeft: padding + 'px', paddingRight: padding + 'px' }">
+      <div class="reaction" :style="{ paddingLeft: padding + 'px', paddingRight: padding + 'px', width: (100 / $parent.reactions.length) + '%' }">
         <div class="reaction__media">
           <div class="reaction__emoji"><img :src="'emojis/' + (reaction.name || 'undefined') + '.png'" :style="{ maxWidth: fontSize + 'px' }"></div><span class="reaction__counter" v-text="reaction.count" :style="{ fontSize: fontSize + 'px' }"></span>
         </div>
