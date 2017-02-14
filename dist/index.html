@@ -36,7 +36,7 @@
             <div class="form__item">
               <label for="input-interval">Reactions</label>
               <div>
-                <vue-add-reactions v-for="(reaction, index) in reactions" :reaction="reaction"></vue-add-reactions>
+                <vue-add-reactions v-for="(reaction, index) in reactions" :reaction="reaction" @remove="removeReaction"></vue-add-reactions>
                 <div class="c-media">
                   <button class="btn btn--clear btn--fill btn--icon-inline" @click="addReaction"><i class="icon-plus-circled" style="color:#2e7d32"></i>Add Reaction</button>
                 </div>
@@ -81,7 +81,7 @@
     <template id="vue-add-reactions">
       <div class="c-media">
         <div class="c-media__left">
-          <button class="btn btn--clear" style="color:#b71c1c" @click="removeReaction"><i class="icon-minus-circled"></i></button>
+          <button class="btn btn--clear" style="color:#b71c1c" @click="remove"><i class="icon-minus-circled"></i></button>
         </div>
         <div class="c-media__body">
           <select class="form-ctl" v-model="reaction.name">

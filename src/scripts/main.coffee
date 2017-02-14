@@ -25,8 +25,13 @@ Vue.component 'vue-add-reactions',
       return REACTIONS
 
   methods:
-    removeReaction: ->
-      @$parent.reactions.splice @_uid - 1, 1
+    remove: ->
+      console.log 'onClickRemoveReaction'
+      console.log @reaction._uid
+      @$emit 'remove', @reaction._uid
+
+  created: ->
+    @reaction._uid = new Date().getTime().toString(16)
 
 Vue.component 'vue-screen-reaction',
   template: '#vue-screen-reaction'
@@ -142,6 +147,16 @@ app = new Vue
       @reactions.push
         name: 'undefined'
         count: 0
+
+    removeReaction: (id)->
+      console.log id
+      return unless id
+      for r, i in @reactions
+        console.log r
+        if r._uid is id
+          @reactions.splice i, 1
+          return
+
 
   mounted: ->
     if @isLocalStorage

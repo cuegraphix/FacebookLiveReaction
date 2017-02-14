@@ -27,9 +27,14 @@
       }
     },
     methods: {
-      removeReaction: function() {
-        return this.$parent.reactions.splice(this._uid - 1, 1);
+      remove: function() {
+        console.log('onClickRemoveReaction');
+        console.log(this.reaction._uid);
+        return this.$emit('remove', this.reaction._uid);
       }
+    },
+    created: function() {
+      return this.reaction._uid = new Date().getTime().toString(16);
     }
   });
 
@@ -85,9 +90,9 @@
       selectableCountdownMinutes: function() {
         var num;
         return (function() {
-          var i, results;
+          var j, results;
           results = [];
-          for (num = i = 36; i >= 1; num = --i) {
+          for (num = j = 36; j >= 1; num = --j) {
             results.push(num * 5);
           }
           return results;
@@ -133,12 +138,12 @@
         return this.running = false;
       },
       updateCount: function() {
-        var fields, fieldsString, i, len, params, query, r, ref, xhr;
+        var fields, fieldsString, j, len, params, query, r, ref, xhr;
         xhr = new XMLHttpRequest();
         fields = [];
         ref = this.reactions;
-        for (i = 0, len = ref.length; i < len; i++) {
-          r = ref[i];
+        for (j = 0, len = ref.length; j < len; j++) {
+          r = ref[j];
           if (!r.name) {
             continue;
           }
@@ -165,12 +170,12 @@
         xhr.open('GET', FACEBOOK_GRAPH_API_URL + "?" + query, true);
         xhr.onload = (function(_this) {
           return function() {
-            var index, j, len1, ref1, ref2, res, results;
+            var index, l, len1, ref1, ref2, res, results;
             res = JSON.parse(xhr.responseText);
             if (xhr.status === 200 && xhr.status < 400) {
               ref1 = _this.reactions;
               results = [];
-              for (index = j = 0, len1 = ref1.length; j < len1; index = ++j) {
+              for (index = l = 0, len1 = ref1.length; l < len1; index = ++l) {
                 r = ref1[index];
                 if (r.name) {
                   results.push(_this.$set(_this.reactions[index], "count", res[_this.postId]["reactions_" + (r.name.toLowerCase())].summary.total_count));
@@ -201,6 +206,22 @@
           name: 'undefined',
           count: 0
         });
+      },
+      removeReaction: function(id) {
+        var i, j, len, r, ref;
+        console.log(id);
+        if (!id) {
+          return;
+        }
+        ref = this.reactions;
+        for (i = j = 0, len = ref.length; j < len; i = ++j) {
+          r = ref[i];
+          console.log(r);
+          if (r._uid === id) {
+            this.reactions.splice(i, 1);
+            return;
+          }
+        }
       }
     },
     mounted: function() {

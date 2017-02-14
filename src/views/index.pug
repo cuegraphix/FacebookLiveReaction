@@ -34,7 +34,7 @@ html
             .form__item
               label(for='input-interval') Reactions
               div
-                vue-add-reactions(v-for='(reaction, index) in reactions', :reaction='reaction')
+                vue-add-reactions(v-for='(reaction, index) in reactions', :reaction='reaction', @remove="removeReaction")
                 .c-media
                   button.btn.btn--clear.btn--fill.btn--icon-inline(@click='addReaction')
                     i.icon-plus-circled(style="color:#2e7d32;")
@@ -71,7 +71,7 @@ html
     template(id='vue-add-reactions')
       .c-media
         .c-media__left
-          button.btn.btn--clear(style="color:#b71c1c", @click="removeReaction")
+          button.btn.btn--clear(style="color:#b71c1c", @click="remove")
             i.icon-minus-circled
         .c-media__body
           select.form-ctl(v-model='reaction.name')
