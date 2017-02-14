@@ -1300,6 +1300,7 @@ button {
   left: 50%;
   -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.6);
   box-shadow: 0 0 4px rgba(0,0,0,0.6);
+  overflow: hidden;
 }
 .screen--black {
   background-color: #101010;
@@ -1323,6 +1324,7 @@ button {
   width: 100%;
   background-color: #fff;
   border-radius: 2px;
+  white-space: nowrap;
 }
 .reaction__emoji {
   display: inline-block;
