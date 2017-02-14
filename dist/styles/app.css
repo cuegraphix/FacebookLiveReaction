@@ -1195,6 +1195,7 @@ br + .form-ctl__option {
     display: block;
   }
 }
+@import url("//fonts.googleapis.com/css?family=Lato:400,700");
 html {
   font-size: 62.5%;
   -webkit-box-sizing: border-box;
@@ -1205,6 +1206,9 @@ html,
 body {
   width: 100%;
   height: 100%;
+}
+body {
+  font-family: 'Lato', 'Avenir Next', Avenir, Helvetica, Arial, sans-serif;
 }
 hr {
   margin-top: 1.5rem;
@@ -1335,4 +1339,5 @@ button {
   padding: 8px;
   font-size: 3.6rem;
   color: #222;
+  font-weight: 700;
 }
