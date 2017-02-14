@@ -12,41 +12,52 @@ html
         button.config__toggle(@click='toggleConfigOpen')
           i.icon-cog
         .config__container
-          .form__item
-            label(for='input-accessToken') Access Token
-            input#input-accessToken.form-ctl(type='text', v-model='accessToken')
+          .config__heading Basic Settings
+          .config__body
+            .form__item
+              label(for='input-accessToken') Access Token
+              input#input-accessToken.form-ctl(type='text', v-model='accessToken')
 
-          .form__item
-            label(for='input-postId') Post ID
-            input#input-postId.form-ctl(type='text', v-model='postId')
-          hr
-          strong Reactions Setting
-          .form__item
-            label(for='input-interval') Reactions
-            div
-              vue-add-reactions(v-for='reaction in reactions', :reaction='reaction')
-              .c-media
-                button.btn.btn--clear.btn--fill.btn--icon-inline(@click='addReaction')
-                  i.icon-plus-circled(style="color:#2e7d32;")
-                  | Add Reaction
-          .form__item
-            label(for='input-countdownMinutes') Countdown Minutes
-            select#input-countdownMinutes.form-ctl(v-model='countdownMinutes', style='max-width: 8em;')
-              option(v-for="min in selectableCountdownMinutes", value='min', v-text="min + ' min'")
-          hr
-          .form__item
-            label(for='input-interval') Update Interval
-            select#input-interval.form-ctl(v-model='intervalSec', style='max-width: 8em;')
-              option(value='1.5') 1.5 sec
-              option(value='2') 2 sec
-              option(value='3') 3 sec
-              option(value='5') 5 sec
-          .form__item
-            label(for='input-screenSize') Display Screen Size
-            select#input-screenSize.form-ctl(v-model='screenSize')
-              option(value='720p') 720p (1280px * 720px)
-              option(value='1080i') 1080i (1920px * 1080px)
-          hr
+            .form__item
+              label(for='input-postId') Post ID
+              input#input-postId.form-ctl(type='text', v-model='postId')
+
+            .form__item
+              label(for='input-interval') Update Interval
+              select#input-interval.form-ctl(v-model='intervalSec', style='max-width: 8em;')
+                option(value='1.5') 1.5 sec
+                option(value='2') 2 sec
+                option(value='3') 3 sec
+                option(value='5') 5 sec
+          .config__heading Reactions Settings
+          .config__body
+            .form__item
+              label(for='input-interval') Reactions
+              div
+                vue-add-reactions(v-for='(reaction, index) in reactions', :reaction='reaction')
+                .c-media
+                  button.btn.btn--clear.btn--fill.btn--icon-inline(@click='addReaction')
+                    i.icon-plus-circled(style="color:#2e7d32;")
+                    | Add Reaction
+            .form__item
+              label(for='input-reaction-font-size') Font Size
+              input#input-reaction-font-size(type="range", min="18", max="64", step="1", :value="reactionFontSize", v-model="reactionFontSize")
+            .form__item
+              label(for='input-reaction-padding') Width
+              input#input-reaction-padding(type="range", min="10", max="100", step="1", :value="reactionPadding", v-model="reactionPadding")
+          .config__heading Screen Settings
+          .config__body
+            .form__item
+              label(for='input-screenSize') Display Screen Size
+              select#input-screenSize.form-ctl(v-model='screenSize')
+                option(value='720p') 720p (1280px * 720px)
+                option(value='1080i') 1080i (1920px * 1080px)
+          .config__heading Countdown Settings
+          .config__body
+            .form__item
+              label(for='input-countdownMinutes') Countdown Minutes
+              select#input-countdownMinutes.form-ctl(v-model='countdownMinutes', style='max-width: 8em;')
+                option(v-for="min in selectableCountdownMinutes", value='min', v-text="min + ' min'")
 
       #screen.screen.screen--black(:style="{" +
       "width: resolution.width + 'px'," +
@@ -55,11 +66,7 @@ html
       "marginLeft: -(resolution.width / 2) + 'px'" +
       "}")
         .screen__reactions.screen__reactions--bottom
-          .reaction(v-for='reaction in reactions')
-            .reaction__media(v-if='reaction.name')
-              .reaction__emoji
-                img(:src="'emojis/' + reaction.name + '.png'")
-              span.reaction__counter(v-text='reaction.count')
+          vue-screen-reaction(v-for='(reaction, index) in reactions', :reaction='reaction', :padding="reactionPadding", :font-size="reactionFontSize")
 
     template(id='vue-add-reactions')
       .c-media
@@ -69,6 +76,13 @@ html
         .c-media__body
           select.form-ctl(v-model='reaction.name')
             option(v-for='r in selectableReactions', :value='r') {{r.toUpperCase()}}
+
+    template(id='vue-screen-reaction')
+      .reaction(:style="{ paddingLeft: padding + 'px', paddingRight: padding + 'px' }")
+        .reaction__media
+          .reaction__emoji
+            img(:src="'emojis/' + (reaction.name || 'undefined') + '.png'", :style="{ maxWidth: fontSize + 'px' }")
+          span.reaction__counter(v-text='reaction.count', :style="{ fontSize: fontSize + 'px' }")
 
 
     script(src='./scripts/vendor/vue.js')

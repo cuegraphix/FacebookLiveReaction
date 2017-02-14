@@ -33,6 +33,15 @@
     }
   });
 
+  Vue.component('vue-screen-reaction', {
+    template: '#vue-screen-reaction',
+    props: {
+      reaction: Object,
+      padding: Number,
+      fontSize: Number
+    }
+  });
+
   app = new Vue({
     el: '#app',
     data: function() {
@@ -44,11 +53,15 @@
         countdownMinutes: null,
         reactions: [
           {
-            name: REACTIONS[0]
+            name: REACTIONS[0],
+            count: 0
           }, {
-            name: REACTIONS[1]
+            name: REACTIONS[1],
+            count: 0
           }
         ],
+        reactionFontSize: 36,
+        reactionPadding: 10,
         _timeoutId: null,
         openConfig: true,
         running: false,
@@ -181,7 +194,10 @@
         return this.openConfig = !this.openConfig;
       },
       addReaction: function() {
-        return this.reactions.push({});
+        return this.reactions.push({
+          name: 'undefined',
+          count: 0
+        });
       }
     },
     mounted: function() {

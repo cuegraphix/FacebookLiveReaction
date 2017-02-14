@@ -1239,8 +1239,8 @@ button {
   width: 320px;
   height: 100%;
   background-color: rgba(0,0,0,0.9);
-  -webkit-box-shadow: 2px 0 4px rgba(0,0,0,0.6);
-  box-shadow: 2px 0 4px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 4px 0 8px rgba(0,0,0,0.2);
+  box-shadow: 4px 0 8px rgba(0,0,0,0.2);
   -webkit-transition: left 0.25s ease;
   -moz-transition: left 0.25s ease;
   -o-transition: left 0.25s ease;
@@ -1257,13 +1257,27 @@ button {
   color: #fff;
 }
 .config__container {
-  padding: 20px;
+  max-height: 100%;
+  overflow: auto;
 }
 .config__container label {
   color: #999;
 }
 .config__container hr {
   border-top: 1px solid #666;
+}
+.config__heading {
+  text-align: center;
+  background-color: #222;
+  padding: 8px 15px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.8);
+  text-transform: uppercase;
+}
+.config__body {
+  padding: 10px 15px;
+  -webkit-box-shadow: -1px 0 1px inset rgba(0,0,0,0.8);
+  box-shadow: -1px 0 1px inset rgba(0,0,0,0.8);
 }
 .config__toggle {
   position: absolute;

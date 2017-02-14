@@ -28,6 +28,13 @@ Vue.component 'vue-add-reactions',
     removeReaction: ->
       @$parent.reactions.splice @_uid - 1, 1
 
+Vue.component 'vue-screen-reaction',
+  template: '#vue-screen-reaction'
+  props:
+    reaction: Object
+    padding: Number
+    fontSize: Number
+
 app = new Vue
   el: '#app'
   data: ->
@@ -37,9 +44,11 @@ app = new Vue
     screenSize: '720p'
     countdownMinutes: null
     reactions: [
-      { name: REACTIONS[0] }
-      { name: REACTIONS[1] }
+      { name: REACTIONS[0], count: 0 }
+      { name: REACTIONS[1], count: 0 }
     ]
+    reactionFontSize: 36
+    reactionPadding: 10
 
     _timeoutId: null
     openConfig: true
@@ -129,7 +138,9 @@ app = new Vue
       @openConfig = !@openConfig
 
     addReaction: ->
-      @reactions.push {}
+      @reactions.push
+        name: 'undefined'
+        count: 0
 
   mounted: ->
     if @isLocalStorage

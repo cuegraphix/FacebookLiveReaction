@@ -11,57 +11,70 @@
       <div id="config" :class="[openConfig ? 'open' : 'close']">
         <button class="config__toggle" @click="toggleConfigOpen"><i class="icon-cog"></i></button>
         <div class="config__container">
-          <div class="form__item">
-            <label for="input-accessToken">Access Token</label>
-            <input class="form-ctl" id="input-accessToken" type="text" v-model="accessToken">
-          </div>
-          <div class="form__item">
-            <label for="input-postId">Post ID</label>
-            <input class="form-ctl" id="input-postId" type="text" v-model="postId">
-          </div>
-          <hr><strong>Reactions Setting</strong>
-          <div class="form__item">
-            <label for="input-interval">Reactions</label>
-            <div>
-              <vue-add-reactions v-for="reaction in reactions" :reaction="reaction"></vue-add-reactions>
-              <div class="c-media">
-                <button class="btn btn--clear btn--fill btn--icon-inline" @click="addReaction"><i class="icon-plus-circled" style="color:#2e7d32"></i>Add Reaction</button>
-              </div>
+          <div class="config__heading">Basic Settings</div>
+          <div class="config__body">
+            <div class="form__item">
+              <label for="input-accessToken">Access Token</label>
+              <input class="form-ctl" id="input-accessToken" type="text" v-model="accessToken">
+            </div>
+            <div class="form__item">
+              <label for="input-postId">Post ID</label>
+              <input class="form-ctl" id="input-postId" type="text" v-model="postId">
+            </div>
+            <div class="form__item">
+              <label for="input-interval">Update Interval</label>
+              <select class="form-ctl" id="input-interval" v-model="intervalSec" style="max-width: 8em">
+                <option value="1.5">1.5 sec</option>
+                <option value="2">2 sec</option>
+                <option value="3">3 sec</option>
+                <option value="5">5 sec</option>
+              </select>
             </div>
           </div>
-          <div class="form__item">
-            <label for="input-countdownMinutes">Countdown Minutes</label>
-            <select class="form-ctl" id="input-countdownMinutes" v-model="countdownMinutes" style="max-width: 8em">
-              <option v-for="min in selectableCountdownMinutes" value="min" v-text="min + ' min'"></option>
-            </select>
+          <div class="config__heading">Reactions Settings</div>
+          <div class="config__body">
+            <div class="form__item">
+              <label for="input-interval">Reactions</label>
+              <div>
+                <vue-add-reactions v-for="(reaction, index) in reactions" :reaction="reaction"></vue-add-reactions>
+                <div class="c-media">
+                  <button class="btn btn--clear btn--fill btn--icon-inline" @click="addReaction"><i class="icon-plus-circled" style="color:#2e7d32"></i>Add Reaction</button>
+                </div>
+              </div>
+            </div>
+            <div class="form__item">
+              <label for="input-reaction-font-size">Font Size</label>
+              <input id="input-reaction-font-size" type="range" min="18" max="64" step="1" :value="reactionFontSize" v-model="reactionFontSize">
+            </div>
+            <div class="form__item">
+              <label for="input-reaction-padding">Width</label>
+              <input id="input-reaction-padding" type="range" min="10" max="100" step="1" :value="reactionPadding" v-model="reactionPadding">
+            </div>
           </div>
-          <hr>
-          <div class="form__item">
-            <label for="input-interval">Update Interval</label>
-            <select class="form-ctl" id="input-interval" v-model="intervalSec" style="max-width: 8em">
-              <option value="1.5">1.5 sec</option>
-              <option value="2">2 sec</option>
-              <option value="3">3 sec</option>
-              <option value="5">5 sec</option>
-            </select>
+          <div class="config__heading">Screen Settings</div>
+          <div class="config__body">
+            <div class="form__item">
+              <label for="input-screenSize">Display Screen Size</label>
+              <select class="form-ctl" id="input-screenSize" v-model="screenSize">
+                <option value="720p">720p (1280px * 720px)</option>
+                <option value="1080i">1080i (1920px * 1080px)</option>
+              </select>
+            </div>
           </div>
-          <div class="form__item">
-            <label for="input-screenSize">Display Screen Size</label>
-            <select class="form-ctl" id="input-screenSize" v-model="screenSize">
-              <option value="720p">720p (1280px * 720px)</option>
-              <option value="1080i">1080i (1920px * 1080px)</option>
-            </select>
+          <div class="config__heading">Countdown Settings</div>
+          <div class="config__body">
+            <div class="form__item">
+              <label for="input-countdownMinutes">Countdown Minutes</label>
+              <select class="form-ctl" id="input-countdownMinutes" v-model="countdownMinutes" style="max-width: 8em">
+                <option v-for="min in selectableCountdownMinutes" value="min" v-text="min + ' min'"></option>
+              </select>
+            </div>
           </div>
-          <hr>
         </div>
       </div>
       <div class="screen screen--black" id="screen" :style="{width: resolution.width + 'px',height: resolution.height + 'px',marginTop: -(resolution.height / 2) + 'px',marginLeft: -(resolution.width / 2) + 'px'}">
         <div class="screen__reactions screen__reactions--bottom">
-          <div class="reaction" v-for="reaction in reactions">
-            <div class="reaction__media" v-if="reaction.name">
-              <div class="reaction__emoji"><img :src="'emojis/' + reaction.name + '.png'"></div><span class="reaction__counter" v-text="reaction.count"></span>
-            </div>
-          </div>
+          <vue-screen-reaction v-for="(reaction, index) in reactions" :reaction="reaction" :padding="reactionPadding" :font-size="reactionFontSize"></vue-screen-reaction>
         </div>
       </div>
     </div>
@@ -74,6 +87,13 @@
           <select class="form-ctl" v-model="reaction.name">
             <option v-for="r in selectableReactions" :value="r">{{r.toUpperCase()}}</option>
           </select>
+        </div>
+      </div>
+    </template>
+    <template id="vue-screen-reaction">
+      <div class="reaction" :style="{ paddingLeft: padding + 'px', paddingRight: padding + 'px' }">
+        <div class="reaction__media">
+          <div class="reaction__emoji"><img :src="'emojis/' + (reaction.name || 'undefined') + '.png'" :style="{ maxWidth: fontSize + 'px' }"></div><span class="reaction__counter" v-text="reaction.count" :style="{ fontSize: fontSize + 'px' }"></span>
         </div>
       </div>
     </template>
